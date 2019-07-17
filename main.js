@@ -195,6 +195,7 @@ Canvas.addEventListener("mouseup", function(event) {
 // UI BUTTON FUNCTIONS
 
 function ClearField() {
+    StopIteration();
     Field = CreateField(GridData.Width, GridData.Height);
     Generation = 1;
     OldPopulation = 0;
@@ -232,4 +233,43 @@ function SkipSteps() {
     for (let i = 0; i < Steps; ++i) {
         Iterate();
     }
+}
+
+function Export() {
+    let AliveList = [];
+    for (let i = 0; i < GridData.Width; ++i) {
+        for (let j = 0; j < GridData.Height; ++j) {
+            if (Field[i][j]) {
+                AliveList.push({
+                    X: i,
+                    Y: j
+                });
+            }
+        }
+    }
+    let StringExport = JSON.stringify(AliveList);
+    alert("Copy the string below:\n" + StringExport);
+}
+
+function Import() {
+    let StringImport = prompt("Please paste JSON string of the cell map here.");
+    let AliveList;
+    try {
+        AliveList = JSON.parse(StringImport);
+    } catch (e) {
+        alert("Failed to parse JSON string. " + e);
+        return;
+    }
+    ClearField();
+    try {
+        AliveList.forEach(function(P) {
+            Field[P.X][P.Y] = true;
+        });
+    } catch (e) {
+        alert("Parsed JSON list has invalid structure. " + e);
+        return;
+    }
+    OldPopulation = CountPopulation(Field);
+    WriteStats(Generation, OldPopulation, Delta);
+    RenderFrame(Field);
 }
