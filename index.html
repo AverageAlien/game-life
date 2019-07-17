@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Game of Life</title>
+</head>
+    <body style="background-color: rgb(202, 220, 224)">
+        <canvas id='main-canvas' width="1024" height="512" tabindex="1">Your browser doesn't support HTML5.</canvas>
+        <br>
+        <input type="button" id="btn-clear" value="Clear" onclick="ClearField();">
+        <input type="button" id="btn-step" value="Next step" onclick="Iterate();">
+        Iteration delay (ms): <input type="number" id="num-delay" min="60" value="1000">
+        <input type="button" id="btn-play" value="Play" onclick="LoopIteration();">
+        <input type="button" id="btn-stop" value="Stop" onclick="StopIteration();">
+        Number of steps: <input type="number" id="num-steps" min="0" value="1">
+        <input type="button" id="btn-skip" value="Skip" onclick="SkipSteps();">
+        <br>
+        <p id="p-stats">Generation: 1 | Population: 0 | Delta: 0</p>
+        <script src="main.js"></script>
+    </body>
+</html>
