@@ -213,13 +213,13 @@ function ClearField() {
     RenderFrame(Field);
 }
 
-function Iterate() {
+function Iterate(Render = true) {
     let NewField = CreateField(GridData.Width, GridData.Height, Field);
     let NewPopulation = CountPopulation(NewField);
     Delta = NewPopulation - OldPopulation;
     ++Generation;
     WriteStats(Generation, NewPopulation, Delta);
-    RenderFrame(NewField);
+    if (Render) RenderFrame(NewField);
     OldPopulation = NewPopulation;
     Field = NewField;
 }
@@ -240,8 +240,9 @@ function StopIteration() {
 function SkipSteps() {
     let Steps = NumSteps.value;
     for (let i = 0; i < Steps; ++i) {
-        Iterate();
+        Iterate(false);
     }
+    RenderFrame(Field);
 }
 
 function Export() {
