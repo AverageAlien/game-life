@@ -32,23 +32,24 @@ const GridData = {
     OutlineColor: "#303030"
 }
 const BlockColors = {
-    Alive: "#ffffff"
+    Alive: "#ffffff",
+    Dead: "#404040"
 }
 
 Ctx.fillStyle = CanvasData.BgColor;
 Ctx.fillRect(0, 0, CanvasData.Width, CanvasData.Height);
 
-function DrawRect(x, y) {
+function DrawRect(x, y, Color) {
     if (GridData.Outline > 0) {
         Ctx.fillStyle = GridData.OutlineColor;
     } else {
-        Ctx.fillStyle = BlockColors.Alive;
+        Ctx.fillStyle = Color;
     }
     let W = CanvasData.Width / GridData.Width;
     let H = CanvasData.Height / GridData.Height;
     Ctx.fillRect(x, y, W, H);
     if (GridData.Outline > 0) {
-        Ctx.fillStyle = BlockColors.Alive;
+        Ctx.fillStyle = Color;
         Ctx.fillRect(
             Math.clamp(x + GridData.Outline, x, x + W / 2),
             Math.clamp(y + GridData.Outline, y, y + H / 2),
@@ -64,8 +65,9 @@ function RenderFrame(RenderField) {
 
     for (let i = 0; i < GridData.Width; ++i) {
         for (let j = 0; j < GridData.Height; ++j) {
-            if (RenderField[i][j]) DrawRect(i * CanvasData.Width / GridData.Width,
-                j * CanvasData.Height / GridData.Height);
+            DrawRect(i * CanvasData.Width / GridData.Width,
+                j * CanvasData.Height / GridData.Height, 
+                RenderField[i][j]?(BlockColors.Alive):(BlockColors.Dead));
         }
     }
 }
@@ -106,6 +108,7 @@ function CreateField(Width, Height, SampleField = null) {
     return F;
 }
 let Field = CreateField(GridData.Width, GridData.Height);
+RenderFrame(Field);
 
 function CountNeighbours(F, x, y) {
     let Neighbours = 0;
@@ -191,6 +194,12 @@ Canvas.addEventListener("mouseup", function(event) {
     }
 });
 
+Canvas.addEventListener("mouseleave", function(event) {
+    if (event.target == Canvas) {
+        Drawing = false;
+        Deleting = false;
+    }
+});
 
 // UI BUTTON FUNCTIONS
 
